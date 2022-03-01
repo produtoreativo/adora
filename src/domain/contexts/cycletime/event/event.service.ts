@@ -35,8 +35,8 @@ export class EventService {
         name: 'GENERIC',
         eventType: EventType.GENERIC,
         payload: payload as unknown as JSON,
-        createdBy: payload.author,
-        lastChangedBy: payload.author,
+        createdBy: 'GENERIC',
+        lastChangedBy: 'GENERIC',
       });
       return this.eventRepository.save(event);
     }

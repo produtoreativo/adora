@@ -5,4 +5,9 @@
 > [2 Coríntios 4:18](https://www.bibliaonline.com.br/niv/2co/4/18)
 
 
+docker build -t adora .
+docker run -p 3100:3100 adora
+docker ps
+docker stop CONTAINER_ID
+
 https://linearb.io/blog/cycle-time-measuring-and-improving-team-process/
