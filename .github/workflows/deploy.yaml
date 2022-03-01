@@ -31,7 +31,7 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: adora
+        ECR_REPOSITORY: public.ecr.aws/b6j5a2n7/adora
         IMAGE_TAG: adora_1_0
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
