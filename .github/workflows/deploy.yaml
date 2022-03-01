@@ -34,5 +34,6 @@ jobs:
         ECR_REPOSITORY: adora
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker build -t adora .
+        docker tag adora:latest public.ecr.aws/b6j5a2n7/adora:$IMAGE_TAG
+        docker push public.ecr.aws/b6j5a2n7/adora:$IMAGE_TAG
