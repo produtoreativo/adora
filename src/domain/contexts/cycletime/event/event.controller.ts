@@ -14,5 +14,13 @@ export class EventController {
   ): Promise<Event> {
     return this.eventService.createStartCycle(applicationId, payload);
   }
+
+  @Post(':app_id/generic')
+  async createGenericEvent(
+    @Body() payload: StartCycle, 
+    @Param('app_id') applicationId: number,
+  ): Promise<Event> {
+    return this.eventService.createGeneric(applicationId, payload);
+  }
   
 }

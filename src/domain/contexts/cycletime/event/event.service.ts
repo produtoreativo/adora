@@ -26,4 +26,19 @@ export class EventService {
     return this.eventRepository.save(event);
   }
 
+  async createGeneric(
+      applicationId: number, 
+      payload: StartCycle): Promise<Event> {
+      const event = new Event;
+      this.eventRepository.merge(event, {
+        applicationId,
+        name: 'GENERIC',
+        eventType: EventType.GENERIC,
+        payload: payload as unknown as JSON,
+        createdBy: payload.author,
+        lastChangedBy: payload.author,
+      });
+      return this.eventRepository.save(event);
+    }
+
 }

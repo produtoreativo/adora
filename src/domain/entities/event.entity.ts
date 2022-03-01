@@ -1,5 +1,4 @@
 import { Column, Entity,   ManyToOne } from 'typeorm';
-import StartCycle from '../dtos/StartCycle.dto';
 import { Application } from './application.entity';
 import { BaseEntity } from './base.entity';
 
@@ -9,6 +8,7 @@ export enum EventType {
   PROMOTE = 'PROMOTE',
   FAIL = 'FAIL',
   RECOVERY = 'RECOVERY',
+  GENERIC='GENERIC',
 }
 
 @Entity({ name: 'events' })
