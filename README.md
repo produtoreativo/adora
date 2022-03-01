@@ -7,7 +7,6 @@
 
 docker build -t adora .
 docker run -p 3100:3100 adora
-docker ps
-docker stop CONTAINER_ID
+docker rm $(docker stop $(docker ps -a -q --filter ancestor=adora --format="{{.ID}}"))
 
 https://linearb.io/blog/cycle-time-measuring-and-improving-team-process/
