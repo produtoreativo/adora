@@ -5,6 +5,7 @@ import { Application } from './domain/entities/application.entity';
 import { Event } from './domain/entities/event.entity';
 import { ApplicationModule } from './domain/contexts/application/application.module';
 import { CycletimeModule } from './domain/contexts/cycletime/cycletime.module';
+import { DeployModule } from './domain/contexts/deploy/deploy.module';
 
 import dbConfiguration from "../db.config";
 @Module({
@@ -20,6 +21,7 @@ import dbConfiguration from "../db.config";
     TypeOrmModule.forFeature([Application, Event]),
     ApplicationModule,
     CycletimeModule,
+    DeployModule,
   ]
 })
 export class AppModule {}
