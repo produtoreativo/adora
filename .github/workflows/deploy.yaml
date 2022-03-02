@@ -37,6 +37,7 @@ jobs:
         #docker build -t adora .
         #docker tag $IMAGE_TAG  ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/adora:$IMAGE_TAG
         #docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/adora:$IMAGE_TAG
+        
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         echo "Pushing image to ECR... $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
