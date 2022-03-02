@@ -9,6 +9,8 @@ docker build -t adora .
 docker run --rm -d -p 3100:3100 adora
 docker rm $(docker stop $(docker ps -a -q --filter ancestor=adora --format="{{.ID}}"))
 
-docker run --rm -d -p 3100:3100 --name adora 467588053624.dkr.ecr.us-east-2.amazonaws.com/adora:2a2e37583e35ec7c18f0f852588a3fd76f164e55  
+docker pull 467588053624.dkr.ecr.us-east-2.amazonaws.com/adora:b6d40f9ea33da5beb1b72f2461ac58cdfe146570
+
+docker run --rm -d -p 3100:3100 --name adora 467588053624.dkr.ecr.us-east-2.amazonaws.com/adora:b6d40f9ea33da5beb1b72f2461ac58cdfe146570
 
 https://linearb.io/blog/cycle-time-measuring-and-improving-team-process/

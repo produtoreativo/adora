@@ -53,8 +53,15 @@ jobs:
 
     - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: adora
+        IMAGE_TAG: ${{ github.sha }}
       with:
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USER }}
         key: ${{ secrets.AWS_KEY }}
-        script: docker ps
+        envs: ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG
+        script:  |
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker run --rm -d -p 3100:3100 --name adora $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

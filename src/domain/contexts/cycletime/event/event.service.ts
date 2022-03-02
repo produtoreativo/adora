@@ -32,7 +32,7 @@ export class EventService {
       const event = new Event;
       this.eventRepository.merge(event, {
         applicationId,
-        name: 'GENERIC',
+        name: 'GENERIC-DEPLOYADO',
         eventType: EventType.GENERIC,
         payload: payload as unknown as JSON,
         createdBy: 'GENERIC',
