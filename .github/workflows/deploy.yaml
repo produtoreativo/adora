@@ -35,8 +35,8 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t adora .
-        docker tag adora:$IMAGE_TAG public.ecr.aws/b6j5a2n7/adora:$IMAGE_TAG
-        docker push public.ecr.aws/b6j5a2n7/adora:$IMAGE_TAG
+        docker tag $IMAGE_TAG  ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/adora:$IMAGE_TAG
+        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/adora:$IMAGE_TAG
 
     - name: Log out of Amazon ECR
       if: always()
