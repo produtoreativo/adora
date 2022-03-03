@@ -2,14 +2,18 @@ import {registerAs} from "@nestjs/config";
 
 console.log('DIR', `${__dirname}/**/*.entity{.ts,.js}` );
 
+const ssl = process.env.DATABASE_SSL ? {
+  ssl: {
+    rejectUnauthorized: false,
+  }
+} : {};
+
 export default registerAs('database', () => {
     return { 
       type: "postgres",
       synchronize: false,
       logging: true,
-        ssl: {
-        rejectUnauthorized: false,
-      },
+      ...ssl,
       autoLoadEntities: true,
       entities: [`${__dirname}/**/*.entity{.ts,.js}`],
       migrations: [`${__dirname}/**/migrations/*.ts`],

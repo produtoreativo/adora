@@ -4,10 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './domain/entities/application.entity';
 import { Event } from './domain/entities/event.entity';
 import { ApplicationModule } from './domain/contexts/application/application.module';
-import { CycletimeModule } from './domain/contexts/cycletime/cycletime.module';
-import { DeployModule } from './domain/contexts/deploy/deploy.module';
-
 import dbConfiguration from "../db.config";
+import { GithubModule } from './domain/contexts/delivery/github/github.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,8 +18,7 @@ import dbConfiguration from "../db.config";
     }),
     TypeOrmModule.forFeature([Application, Event]),
     ApplicationModule,
-    CycletimeModule,
-    DeployModule,
+    GithubModule,
   ]
 })
 export class AppModule {}

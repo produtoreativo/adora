@@ -1,6 +1,7 @@
 import { Column, Entity,   ManyToOne } from 'typeorm';
 import { Application } from './application.entity';
 import { BaseEntity } from './base.entity';
+import { Task } from './task.entity';
 
 export enum EventType {
   START_CYCLE = "START_CYCLE",
@@ -19,6 +20,9 @@ export class Event extends BaseEntity {
   @Column()
   applicationId: number;
 
+  @Column()
+  taskId: number;
+
   @Column({
     type: "enum",
     enum: EventType,
@@ -31,5 +35,8 @@ export class Event extends BaseEntity {
 
   @ManyToOne((type) => Application)
   application: Application;
+
+  @ManyToOne((type) => Task)
+  task: Task;
 
 }
