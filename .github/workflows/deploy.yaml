@@ -1,9 +1,9 @@
 name: Deploy to ECR
 
 on:
- 
   push:
-    branches: [ feat(#1) ]
+    branches:
+      - 'master'
 
 jobs:
   
