@@ -1,0 +1,1 @@
+CREATE SCHEMA adora AUTHORIZATION localuser;

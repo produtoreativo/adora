@@ -1,3 +1,5 @@
+import * as Joi from 'joi';
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { Application } from './domain/entities/application.entity';
@@ -7,11 +9,19 @@ import { GithubModule } from './domain/contexts/delivery/github/github.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import dbConfiguration from '../db.config';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [dbConfiguration],
+      validationSchema: Joi.object({
+        DB_MAIN_HOST: Joi.string().required(),
+        DB_MAIN_PORT: Joi.number().required(),
+        DB_MAIN_USER: Joi.string().required(),
+        DB_MAIN_PASSWORD: Joi.string().required(),
+        DB_MAIN_DATABASE: Joi.string().required(),
+      }),
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

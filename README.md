@@ -48,3 +48,24 @@ Merge to master <https://docs.github.com/en/actions/using-workflows/events-that-
 ```
 
 9e733d2e2f4e6780e3b434573e2e35f132de6913
+
+---
+## Spin up dockerized postgres
+
+```bash
+# Run docker compose detached
+$ docker-compose -f docker/db/local.yml up -d
+
+# Execute migrations to create the inicial structure
+$ yarn m:run
+
+# Stop docker compose
+$ docker-compose -f docker/db/local.yml down
+```
+
+## Connecting into the local db
+
+- user: localuser
+- pwd: localpwd
+- database: adora
+- schema: adora
