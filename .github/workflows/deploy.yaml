@@ -20,12 +20,12 @@ jobs:
     - name: Create env file
       run: |
         touch .env
-        echo DB_MAIN_HOST=${{ secrets.DATABASE_HOST }} >> .env
-        echo DB_MAIN_PORT=${{ secrets.DATABASE_PORT }} >> .env
-        echo DB_MAIN_USER=${{ secrets.DATABASE_USER }} >> .env
-        echo DB_MAIN_PASSWORD=${{ secrets.DATABASE_PWD }} >> .env
-        echo DB_MAIN_DATABASE=${{ secrets.DATABASE_NAME }} >> .env
-        echo DB_MAIN_SCHEMA=${{ secrets.DATABASE_SCHEMA }} >> .env
+        echo DB_MAIN_HOST=${{ secrets.DB_MAIN_HOST }} >> .env
+        echo DB_MAIN_PORT=${{ secrets.DB_MAIN_PORT }} >> .env
+        echo DB_MAIN_USER=${{ secrets.DB_MAIN_USER }} >> .env
+        echo DB_MAIN_PASSWORD=${{ secrets.DB_MAIN_PASSWORD }} >> .env
+        echo DB_MAIN_DATABASE=${{ secrets.DB_MAIN_DATABASE }} >> .env
+        echo DB_MAIN_SCHEMA=${{ secrets.DB_MAIN_SCHEMA }} >> .env
         echo PORT=${{ secrets.PORT }} >> .env
         echo DATABASE_SSL=true >> .env
         cat .env
