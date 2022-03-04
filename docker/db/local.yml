@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  adora-db:
+    image: postgres
+    restart: always
+    ports:
+      - 8000:5432
+    environment:
+      POSTGRES_USER: localuser
+      POSTGRES_PASSWORD: localpwd
+      POSTGRES_DB: adora
+    volumes: 
+      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql

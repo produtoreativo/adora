@@ -1,15 +1,16 @@
-import { Column, Entity,   ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
+
 import { Application } from './application.entity';
 import { BaseEntity } from './base.entity';
 import { Task } from './task.entity';
 
 export enum EventType {
-  START_CYCLE = "START_CYCLE",
-  SHIP = "SHIP",
+  START_CYCLE = 'START_CYCLE',
+  SHIP = 'SHIP',
   PROMOTE = 'PROMOTE',
   FAIL = 'FAIL',
   RECOVERY = 'RECOVERY',
-  GENERIC='GENERIC',
+  GENERIC = 'GENERIC',
 }
 
 @Entity({ name: 'events' })
@@ -24,9 +25,9 @@ export class Event extends BaseEntity {
   taskId: number;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: EventType,
-    default: EventType.START_CYCLE
+    default: EventType.START_CYCLE,
   })
   eventType: EventType;
 
@@ -38,5 +39,4 @@ export class Event extends BaseEntity {
 
   @ManyToOne((type) => Task)
   task: Task;
-
 }

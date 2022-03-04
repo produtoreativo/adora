@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+
 import { Application } from './application.entity';
 import { BaseEntity } from './base.entity';
 import { Event } from './event.entity';
@@ -23,7 +24,6 @@ export class Task extends BaseEntity {
   @ManyToOne((type) => Application)
   application: Application;
 
-  @OneToMany(type => Event, events => events.application)
+  @OneToMany((type) => Event, (events) => events.application)
   events: Event[];
-
 }

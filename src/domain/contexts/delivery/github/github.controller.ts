@@ -9,7 +9,7 @@ export class GithubController {
 
   @Post(':app_id/hack')
   async hack(
-    @Body() payload: StartCycle, 
+    @Body() payload: StartCycle,
     @Param('app_id') applicationId: number,
   ): Promise<Event> {
     return this.eventService.createTask(applicationId, payload);
@@ -17,7 +17,7 @@ export class GithubController {
 
   @Post(':app_id/start')
   async createStartCycle(
-    @Body() payload: StartCycle, 
+    @Body() payload: StartCycle,
     @Param('app_id') applicationId: number,
   ): Promise<Event> {
     return this.eventService.createEvent(applicationId, payload);
@@ -25,10 +25,9 @@ export class GithubController {
 
   @Post(':app_id/start_from_merge')
   async createStartCycleFromMerge(
-    @Body() payload: StartCycle, 
+    @Body() payload: StartCycle,
     @Param('app_id') applicationId: number,
   ): Promise<Event[]> {
     return this.eventService.createEventFromMerge(applicationId, payload);
   }
-  
 }

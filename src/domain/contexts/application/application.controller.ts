@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApplicationService } from './application.service';
 import { Application } from '../..//entities/application.entity';
 
@@ -8,9 +8,8 @@ export class ApplicationController {
 
   @Post('application')
   async createApplication(
-    @Body() application: Application
+    @Body() application: Application,
   ): Promise<Application> {
     return this.applicationService.createApplication(application);
   }
-
 }

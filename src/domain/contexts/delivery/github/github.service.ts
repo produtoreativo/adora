@@ -14,82 +14,107 @@ export class GithubService {
     private taskRepository: Repository<Task>,
   ) {}
 
-  async saveTask(payload: StartCycle, applicationId: number, author: JSON): Promise<Task> {
-    const {commit: hash} = payload;
+  async saveTask(
+    payload: StartCycle,
+    applicationId: number,
+    author: JSON,
+  ): Promise<Task> {
+    const { commit: hash } = payload;
     const { ref } = payload.data;
     return this.taskRepository.save({
-      name: ref, 
-      ref, 
-      hash, 
+      name: ref,
+      ref,
+      hash,
       applicationId,
-      ...author, 
+      ...author,
       payload: payload as unknown as JSON,
-    })
+    });
   }
 
   async createTask(applicationId: number, payload: StartCycle): Promise<Event> {
-    const author = {createdBy : 'github', lastChangedBy: 'github'};
-    const task: Task = await this.saveTask(payload, applicationId, author as unknown as JSON);
+    const author = { createdBy: 'github', lastChangedBy: 'github' };
+    const task: Task = await this.saveTask(
+      payload,
+      applicationId,
+      author as unknown as JSON,
+    );
     return this.eventRepository.save({
       applicationId,
       taskId: task.id,
       name: payload.data.name,
       eventType: EventType.START_CYCLE,
       payload: payload as unknown as JSON,
-      ...author, 
+      ...author,
     });
   }
 
   async findTask(applicationId: number, ref: string): Promise<Task> {
-   return  this.taskRepository.createQueryBuilder("tasks")
-    .where('tasks.ref = :ref', { ref })
-    .andWhere('tasks.applicationId = :applicationId', { applicationId })
-    .getOne();
+    return this.taskRepository
+      .createQueryBuilder('tasks')
+      .where('tasks.ref = :ref', { ref })
+      .andWhere('tasks.applicationId = :applicationId', { applicationId })
+      .getOne();
   }
 
-  async createEvent(applicationId: number, payload: StartCycle): Promise<Event> {
-
-    const { data: { ref, name } } = payload;
+  async createEvent(
+    applicationId: number,
+    payload: StartCycle,
+  ): Promise<Event> {
+    const {
+      data: { ref, name },
+    } = payload;
     const task: Task = await this.findTask(applicationId, ref);
 
-    const author = {createdBy : 'github', lastChangedBy: 'github'};
-    const eventType:EventType =  EventType.START_CYCLE;
-    
+    const author = { createdBy: 'github', lastChangedBy: 'github' };
+    const eventType: EventType = EventType.START_CYCLE;
+
     return this.eventRepository.save({
-      applicationId, taskId: task.id, name, eventType,
+      applicationId,
+      taskId: task.id,
+      name,
+      eventType,
       payload: payload as unknown as JSON,
-      ...author, 
+      ...author,
     });
   }
 
-  async findMultipleTask(applicationId: number, ids: string[]): Promise<Task[]> {
-    return  this.taskRepository.createQueryBuilder("tasks")
-     .where("tasks.hash IN(:...ids)", { ids })
-     .andWhere('tasks.applicationId = :applicationId', { applicationId })
-     .getMany();
-   }
+  async findMultipleTask(
+    applicationId: number,
+    ids: string[],
+  ): Promise<Task[]> {
+    return this.taskRepository
+      .createQueryBuilder('tasks')
+      .where('tasks.hash IN(:...ids)', { ids })
+      .andWhere('tasks.applicationId = :applicationId', { applicationId })
+      .getMany();
+  }
 
-  async createEventFromMerge(applicationId: number, payload: StartCycle): Promise<Event[]> {
-    const { commits, data: { name } } = payload;
+  async createEventFromMerge(
+    applicationId: number,
+    payload: StartCycle,
+  ): Promise<Event[]> {
+    const {
+      commits,
+      data: { name },
+    } = payload;
 
-    const ids = commits.map(( item ) => (item['id']));
+    const ids = commits.map((item) => item['id']);
     const tasks: Task[] = await this.findMultipleTask(applicationId, ids);
 
-    const events: Event[] = tasks.map(task => {
-      const author = {createdBy : 'github', lastChangedBy: 'github'};
-      const eventType:EventType =  EventType.START_CYCLE;
-      const event: Event = new Event;
-       this.eventRepository.merge(event, {
+    const events: Event[] = tasks.map((task) => {
+      const author = { createdBy: 'github', lastChangedBy: 'github' };
+      const eventType: EventType = EventType.START_CYCLE;
+      const event: Event = new Event();
+      this.eventRepository.merge(event, {
         applicationId,
         taskId: task.id,
         name,
         eventType,
         payload: payload as unknown as JSON,
-        ...author, 
+        ...author,
       });
       return event;
     });
     return this.eventRepository.save(events);
   }
-
 }
