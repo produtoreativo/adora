@@ -11,12 +11,11 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>,
   ) {}
 
-    async createApplication(application: Application): Promise<Application> {
-      return this.applicationRepository.save({
-        createdBy: '',
-        lastChangedBy: '',
-        ...application,
-      })
-    }
-
+  async createApplication(application: Application): Promise<Application> {
+    return this.applicationRepository.save({
+      createdBy: '',
+      lastChangedBy: '',
+      ...application,
+    });
+  }
 }
