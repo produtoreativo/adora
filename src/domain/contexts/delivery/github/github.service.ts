@@ -4,6 +4,8 @@ import { Task } from '../../../entities/task.entity';
 import { Repository } from 'typeorm';
 import StartCycle from '../../../dtos/StartCycle.dto';
 import { Event, EventType } from '../../../entities/event.entity';
+import { Deployment } from '../../../entities/deployment.entity';
+import DeployDTO from '../../../dtos/Deploy.dto';
 
 @Injectable()
 export class GithubService {
@@ -12,6 +14,8 @@ export class GithubService {
     private eventRepository: Repository<Event>,
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
+    @InjectRepository(Deployment)
+    private deploymentRepository: Repository<Deployment>,
   ) {}
 
   async saveTask(
@@ -116,5 +120,15 @@ export class GithubService {
       return event;
     });
     return this.eventRepository.save(events);
+  }
+
+  async createDeploy(applicationId: number, payload: DeployDTO): Promise<Deployment> {
+    const author = { createdBy: 'github', lastChangedBy: 'github' };
+    return this.deploymentRepository.save({
+      ...author,
+      applicationId,
+      name: 'Deploy',
+      payload: payload as unknown as JSON,
+    });
   }
 }
