@@ -1,9 +1,9 @@
-import { ConfigModule } from "@nestjs/config";
-import dbConfiguration from "./db.config";
+import { ConfigModule } from '@nestjs/config';
+import dbConfiguration from './db.config';
 
 ConfigModule.forRoot({
-    isGlobal: true,
-    load: [dbConfiguration],
-})
+  isGlobal: true,
+  load: [dbConfiguration],
+});
 
-export default dbConfiguration()
+export default dbConfiguration();
