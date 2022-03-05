@@ -1,0 +1,15 @@
+name: Code Coverage Report
+on: ['push']
+jobs:
+  coverage-report:
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Run & Report code Coverage
+      run: |
+        npm install
+        npm run test:cov
+    - name: Send Report
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
