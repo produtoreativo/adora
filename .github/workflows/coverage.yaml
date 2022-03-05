@@ -7,7 +7,7 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-    - name: Run & Report code Coverage
+    - name: Run Code Coverage & Report
       run: |
         npm install
         npm run test:cov
