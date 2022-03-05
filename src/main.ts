@@ -19,6 +19,18 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs/api', app, document);
 
+  process.on('SIGINT', () => {
+    console.log('Request to exit ...');
+    process.kill(process.pid, 'SIGTERM');
+  });
+  process.on('SIGTERM', () => {
+    console.log('Terminating ...');
+    app
+      .close()
+      .catch((err) => console.error('Error when closing application', err))
+      .then(() => console.log('Process terminated'));
+  });
+
   await app.listen(process.env.PORT, '0.0.0.0');
 }
 bootstrap();

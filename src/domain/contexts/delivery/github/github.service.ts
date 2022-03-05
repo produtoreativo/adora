@@ -122,7 +122,10 @@ export class GithubService {
     return this.eventRepository.save(events);
   }
 
-  async createDeploy(applicationId: number, payload: DeployDTO): Promise<Deployment> {
+  async createDeploy(
+    applicationId: number,
+    payload: DeployDTO,
+  ): Promise<Deployment> {
     const author = { createdBy: 'github', lastChangedBy: 'github' };
     return this.deploymentRepository.save({
       ...author,
