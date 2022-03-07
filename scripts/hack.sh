@@ -1,5 +1,5 @@
 #!/bin/sh -x
-FB="feat($1)"
+FB="feat(#$1)"
 git stash
 git checkout master
 git pull --rebase origin master
