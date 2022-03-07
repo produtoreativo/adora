@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { BaseEntity } from './base.entity';
+import { Deployment } from './deployment.entity';
 import { Event } from './event.entity';
 import { Task } from './task.entity';
 
@@ -17,4 +18,7 @@ export class Application extends BaseEntity {
 
   @OneToMany((type) => Task, (tasks) => tasks.application)
   tasks: Task[];
+
+  @OneToMany((type) => Deployment, (deployment) => deployment.application)
+  deployments: Deployment[];
 }

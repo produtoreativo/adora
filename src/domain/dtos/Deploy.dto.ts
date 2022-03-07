@@ -1,8 +1,8 @@
 class DeployDTO {
   data: {
-    ref: string;
-    eventType: string;
     name: string;
+    origin: string;
+    state: string;
   };
 }
 export default DeployDTO;

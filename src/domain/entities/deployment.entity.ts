@@ -9,6 +9,9 @@ export class Deployment extends BaseEntity {
   name: string;
 
   @Column()
+  state: string;
+
+  @Column()
   applicationId: number;
 
   @Column({ type: 'json', nullable: true })

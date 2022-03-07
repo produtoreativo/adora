@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-
+import { Column, Entity, ManyToOne, OneToMany, CreateDateColumn } from 'typeorm';
 import { Application } from './application.entity';
 import { BaseEntity } from './base.entity';
 import { Event } from './event.entity';
@@ -14,6 +13,17 @@ export class Task extends BaseEntity {
 
   @Column()
   hash: string;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  startedAt: Date;
+
+  // @CreateDateColumn({ type: 'timestamptz', nullable: true, default: () => null })
+  @Column({ type: 'timestamptz', nullable: true, default: null })
+  finishedAt!: Date;
+
+  // @CreateDateColumn({ type: 'timestamptz', nullable: true, default: () => null })
+  @Column({ type: 'timestamptz' , nullable: true, default: null})
+  deployedAt!: Date;
 
   @Column()
   applicationId: number;

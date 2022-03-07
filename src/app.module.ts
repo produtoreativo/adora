@@ -9,6 +9,7 @@ import { GithubModule } from './domain/contexts/delivery/github/github.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import dbConfiguration from '../db.config';
+import { DeliveryModule } from './domain/contexts/delivery/delivery.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import dbConfiguration from '../db.config';
     }),
     TypeOrmModule.forFeature([Application, Event]),
     ApplicationModule,
+    DeliveryModule,
     GithubModule,
   ],
 })

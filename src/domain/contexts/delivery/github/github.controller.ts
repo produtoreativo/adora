@@ -1,10 +1,10 @@
 import { Body, Controller, Param, Post } from '@nestjs/common';
-import StartCycle from '../../../dtos/StartCycle.dto';
+import { ApiBody } from '@nestjs/swagger';
 import { GithubService } from './github.service';
 import { Event } from '../../../entities/event.entity';
-import DeployDTO from '../../../dtos/Deploy.dto';
 import { Deployment } from '../../../entities/deployment.entity';
-import { ApiBody } from '@nestjs/swagger';
+import StartCycle from '../../../dtos/StartCycle.dto';
+import GithubDeploy from '../../../dtos/GithubDeploy.dto';
 
 @Controller('github')
 export class GithubController {
@@ -37,10 +37,10 @@ export class GithubController {
     return this.eventService.createEventFromMerge(applicationId, payload);
   }
 
-  @ApiBody({ type: DeployDTO })
+  @ApiBody({ type: GithubDeploy })
   @Post(':app_id/deploy')
   async createDeploy(
-    @Body() payload: DeployDTO,
+    @Body() payload: GithubDeploy,
     @Param('app_id') applicationId: number,
   ): Promise<Deployment> {
     return this.eventService.createDeploy(applicationId, payload);
