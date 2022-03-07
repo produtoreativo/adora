@@ -6,6 +6,7 @@ import { Task } from './task.entity';
 
 export enum EventType {
   START_CYCLE = 'START_CYCLE',
+  FINISH = 'FINISH',
   SHIP = 'SHIP',
   PROMOTE = 'PROMOTE',
   FAIL = 'FAIL',

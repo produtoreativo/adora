@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task } from '../../../entities/task.entity';
 import { Repository } from 'typeorm';
-import StartCycle from '../../../dtos/StartCycle.dto';
+import { DeliveryService } from '../delivery.service';
+import { Task } from '../../../entities/task.entity';
 import { Event, EventType } from '../../../entities/event.entity';
 import { Deployment } from '../../../entities/deployment.entity';
-import DeployDTO from '../../../dtos/Deploy.dto';
+import StartCycle from '../../../dtos/StartCycle.dto';
+import HackDTO from '../../../dtos/Hack.dto';
+import GithubDeploy from '../../../dtos/GithubDeploy.dto';
 
 @Injectable()
 export class GithubService {
@@ -14,42 +16,18 @@ export class GithubService {
     private eventRepository: Repository<Event>,
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
-    @InjectRepository(Deployment)
-    private deploymentRepository: Repository<Deployment>,
+    private readonly deliveryService: DeliveryService,
   ) {}
 
-  async saveTask(
-    payload: StartCycle,
-    applicationId: number,
-    author: JSON,
-  ): Promise<Task> {
-    const { commit: hash } = payload;
-    const { ref } = payload.data;
-    return this.taskRepository.save({
-      name: ref,
-      ref,
-      hash,
-      applicationId,
-      ...author,
-      payload: payload as unknown as JSON,
-    });
-  }
-
   async createTask(applicationId: number, payload: StartCycle): Promise<Event> {
-    const author = { createdBy: 'github', lastChangedBy: 'github' };
-    const task: Task = await this.saveTask(
-      payload,
-      applicationId,
-      author as unknown as JSON,
-    );
-    return this.eventRepository.save({
-      applicationId,
-      taskId: task.id,
+    const hackDTO = new HackDTO;
+    hackDTO.data = {
+      ref: payload.data.ref,
       name: payload.data.name,
-      eventType: EventType.START_CYCLE,
-      payload: payload as unknown as JSON,
-      ...author,
-    });
+      hash: payload.commit,
+      origin: 'github',
+    }
+    return this.deliveryService.createTask(applicationId, hackDTO)
   }
 
   async findTask(applicationId: number, ref: string): Promise<Task> {
@@ -119,19 +97,26 @@ export class GithubService {
       });
       return event;
     });
-    return this.eventRepository.save(events);
+    await this.eventRepository.save(events);
+
+    return Promise.all( tasks.map(task => {
+      return this.deliveryService.finishTask(applicationId, {
+        data: {
+          name,
+          origin: 'github',
+          ref: task.ref,
+        }
+      })
+    }));
   }
 
   async createDeploy(
     applicationId: number,
-    payload: DeployDTO,
+    payload: GithubDeploy,
   ): Promise<Deployment> {
-    const author = { createdBy: 'github', lastChangedBy: 'github' };
-    return this.deploymentRepository.save({
-      ...author,
-      applicationId,
-      name: 'Deploy',
-      payload: payload as unknown as JSON,
-    });
+    const { deployment_status: { state }, data : { name } } = payload;
+    return this.deliveryService.ship(applicationId, {
+      data: { name, state, origin: 'github' }
+    })
   }
 }
