@@ -2,6 +2,10 @@
 
 [![Deploy to ECR](https://github.com/produtoreativo/adora/actions/workflows/deploy.yaml/badge.svg?branch=master)](https://github.com/produtoreativo/adora/actions/workflows/deploy.yaml)
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b2ac8594e7f040eb81bb4031e147c53a)](https://www.codacy.com/gh/joao-felipe-santoro/adora/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=joao-felipe-santoro/adora&amp;utm_campaign=Badge_Grade)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b2ac8594e7f040eb81bb4031e147c53a)](https://www.codacy.com/gh/joao-felipe-santoro/adora/dashboard?utm_source=github.com&utm_medium=referral&utm_content=joao-felipe-santoro/adora&utm_campaign=Badge_Coverage)
+
 > So we fix our eyes not on what is seen, but on what is unseen, since what is seen is temporary, but what is unseen is eternal.
 >
 > [2 Coríntios 4:18](https://www.bibliaonline.com.br/niv/2co/4/18)
