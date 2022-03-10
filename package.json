@@ -22,13 +22,16 @@
     "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -f ./ormconfig.ts",
     "m:generate": "yarn typeorm:cli migration:generate -n",
     "m:run": "yarn typeorm:cli migration:run",
-    "m:revert": "yarn typeorm:cli  migration:revert"
+    "m:revert": "yarn typeorm:cli  migration:revert",
+    "doc:generate": "npx @compodoc/compodoc -p tsconfig.json",
+    "doc:ship": "mkdir -p dist/static && cp -R documentation/* dist/static"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/serve-static": "^2.2.2",
     "@nestjs/swagger": "^5.2.0",
     "@nestjs/typeorm": "^8.0.3",
     "joi": "^17.6.0",
@@ -40,6 +43,7 @@
     "typeorm": "^0.2.44"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.19",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
