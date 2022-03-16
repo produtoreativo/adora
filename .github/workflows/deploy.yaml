@@ -3,7 +3,7 @@ name: Deploy Adora to ECR
 on: 
   push:
     branches: 
-      - 'master'
+      - '**'
 
 jobs:
   build: 
