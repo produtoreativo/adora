@@ -1,20 +1,19 @@
-name: Deploy to ECR
+name: Deploy Adora to ECR
 
-on:
+on: 
   push:
-    branches:
-      - '**'
+    branches: 
+      - 'master'
 
 jobs:
-  
-  build:
-    
-    name: Build Image
+  build: 
+
+    name: Build image
     runs-on: ubuntu-latest
 
     steps:
 
-    - name: Check out code
+    - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Create env file
@@ -29,10 +28,10 @@ jobs:
         echo PORT=${{ secrets.PORT }} >> .env
         echo DATABASE_SSL=true >> .env
         cat .env
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
+
+    - name: Credentials
+      user: aws-actions/configure-aws-credentials@v1
+      with: 
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
@@ -48,28 +47,8 @@ jobs:
         ECR_REPOSITORY: adora
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t$ECR_REPOSITORY:$IMAGE_TAG .
-        echo "Pushing image to ECR... $ECR_REPOSITORY:$IMAGE_TAG "
-        docker push $ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REPOSITORY:$IMAGE_TAG"
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        echo "criando $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "publicando em $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: Log out of Amazon ECR
-      if: always()
-      run: docker logout ${{ steps.login-ecr.outputs.registry }}
-
-    # - name: executing remote ssh commands using ssh key
-    #   uses: appleboy/ssh-action@master
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     ECR_REPOSITORY: adora
-    #     IMAGE_TAG: ${{ github.sha }}
-    #   with:
-    #     host: ${{ secrets.AWS_HOST }}
-    #     username: ${{ secrets.AWS_USER }}
-    #     key: ${{ secrets.AWS_KEY }}
-    #     envs: ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG
-    #     script:  |
-    #       $(aws ecr get-login --no-include-email --region us-east-1)
-    #       docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    #       docker stop adora
-    #       docker run --rm -d -p 3100:3100 --name adora $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
