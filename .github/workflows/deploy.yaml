@@ -48,10 +48,10 @@ jobs:
         ECR_REPOSITORY: adora
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        echo "Pushing image to ECR... $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        docker build -t$ECR_REPOSITORY:$IMAGE_TAG .
+        echo "Pushing image to ECR... $ECR_REPOSITORY:$IMAGE_TAG "
+        docker push $ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Log out of Amazon ECR
       if: always()
