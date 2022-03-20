@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ApplicationService {
+
   constructor(
     @InjectRepository(Application)
     private applicationRepository: Repository<Application>,
@@ -18,4 +19,8 @@ export class ApplicationService {
       ...application,
     });
   }
+  async getApplication(applicationId: number): Promise<Application>  {
+    return this.applicationRepository.findOne(applicationId);
+  }
+
 }
