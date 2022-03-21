@@ -1,15 +1,13 @@
-name: Deploy Adora to ECR
+name: Deploy Adora to EC2
 
-on: 
+on:
   push:
     branches: 
       - '**'
 
 jobs:
-
   build: 
-
-    name: Build image
+    name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -17,10 +15,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Create env file
+    - name: Create env File
       run: |
         touch .env
-        echo DB_MAIN_HOST=${{ secrets.DB_MAIN_HOST }} >> .env
+         echo DB_MAIN_HOST=${{ secrets.DB_MAIN_HOST }} >> .env
         echo DB_MAIN_PORT=${{ secrets.DB_MAIN_PORT }} >> .env
         echo DB_MAIN_USER=${{ secrets.DB_MAIN_USER }} >> .env
         echo DB_MAIN_PASSWORD=${{ secrets.DB_MAIN_PASSWORD }} >> .env
@@ -31,7 +29,7 @@ jobs:
         cat .env
 
     - name: Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses:  aws-actions/configure-aws-credentials@v1
       with: 
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -41,21 +39,19 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-ecr
-      env:
+    - name: Build image
+      env: 
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: adora
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        echo "criando $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
+        docker build -t  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "publicando em $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo " build and deploy: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: executar ssh e rolling update da coisa
+    - name: Rolling update via SSH
       uses: appleboy/ssh-action@master
-      env:
+      env: 
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: adora
         IMAGE_TAG: ${{ github.sha }}
