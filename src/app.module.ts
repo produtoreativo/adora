@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { PuppeteerModule } from 'nest-puppeteer';
 import { Application } from './domain/entities/application.entity';
 import { ApplicationModule } from './domain/contexts/application/application.module';
 import { DeliveryModule } from './domain/contexts/delivery/delivery.module';
@@ -12,6 +12,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import dbConfiguration from '../db.config';
 import { join } from 'path';
+import { GlenioController } from './glenio.controller';
 
 @Module({
   imports: [
@@ -41,6 +42,13 @@ import { join } from 'path';
       serveRoot: '/docs',
       exclude: ['/api*'],
     }),
+    PuppeteerModule.forRoot(
+      //{ pipe: true }, // optional, any Puppeteer launch options here or leave empty for good defaults */,
+     // 'BrowserInstanceName', // optional, can be useful for using Chrome and Firefox in the same project
+    ),
   ],
+  controllers: [
+    GlenioController,
+  ]
 })
 export class AppModule {}
