@@ -1,57 +1,57 @@
-name: Deploy Adora to EC2
+name: CI/CD do Adora
 
-on:
-  push:
-    branches: 
+on: 
+  push: 
+    branches:
       - '**'
 
 jobs:
-  build: 
+  build:
     name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
 
-    - name: Checkout code
+    - name: Checkouot Code
       uses: actions/checkout@v2
 
-    - name: Create env File
+    - name: Create env file
       run: |
-        touch .env
+         touch .env
          echo DB_MAIN_HOST=${{ secrets.DB_MAIN_HOST }} >> .env
-        echo DB_MAIN_PORT=${{ secrets.DB_MAIN_PORT }} >> .env
-        echo DB_MAIN_USER=${{ secrets.DB_MAIN_USER }} >> .env
-        echo DB_MAIN_PASSWORD=${{ secrets.DB_MAIN_PASSWORD }} >> .env
-        echo DB_MAIN_DATABASE=${{ secrets.DB_MAIN_DATABASE }} >> .env
-        echo DB_MAIN_SCHEMA=${{ secrets.DB_MAIN_SCHEMA }} >> .env
-        echo PORT=${{ secrets.PORT }} >> .env
-        echo DATABASE_SSL=true >> .env
-        cat .env
+          echo DB_MAIN_PORT=${{ secrets.DB_MAIN_PORT }} >> .env
+          echo DB_MAIN_USER=${{ secrets.DB_MAIN_USER }} >> .env
+          echo DB_MAIN_PASSWORD=${{ secrets.DB_MAIN_PASSWORD }} >> .env
+          echo DB_MAIN_DATABASE=${{ secrets.DB_MAIN_DATABASE }} >> .env
+          echo DB_MAIN_SCHEMA=${{ secrets.DB_MAIN_SCHEMA }} >> .env
+          echo PORT=${{ secrets.PORT }} >> .env
+          echo DATABASE_SSL=true >> .env
+          cat .env
 
     - name: Credentials
-      uses:  aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v1
       with: 
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
 
-    - name: Login to Amazon ECR
-      id: login-ecr
+    - name: Login to ECR
+      id:  login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build image
-      env: 
+      env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: adora
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo " build and deploy: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
-    - name: Rolling update via SSH
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
+        eeho "Buildado $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
+    
+    - name: Deploy to EC2
       uses: appleboy/ssh-action@master
-      env: 
+      env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: adora
         IMAGE_TAG: ${{ github.sha }}
@@ -64,4 +64,4 @@ jobs:
           $(aws ecr get-login --no-include-email --region us-east-2)
           docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker stop adora || true && docker rm adora || true
-          docker run --rm -d -p 3100:3100 --name adora $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker run --run -d -p 3100:3100 --name adora $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

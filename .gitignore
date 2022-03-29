@@ -1,5 +1,7 @@
 .env
 
+*.pem
+
 # compiled output
 /dist
 /node_modules
