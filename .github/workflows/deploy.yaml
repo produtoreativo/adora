@@ -47,7 +47,7 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-        eeho "Buildado $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
+        echo "Buildado $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
     
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
