@@ -1,5 +1,9 @@
 name: Code Coverage Report
-on: ['push']
+on:
+  push:
+    branches:
+      - 'master'
+
 jobs:
   coverage-report:
     name: coverage-report
