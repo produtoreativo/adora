@@ -60,7 +60,7 @@ echo "Load Balancer config: $LB_CONF2"
 aws ecs create-service \
   --cluster adora-prod \
   --service-name adora-prod-service \
-  --task-definition adora_prod_family:2 \
+  --task-definition adora_prod_family:3 \
   --desired-count 1 \
   --load-balancers $LB_CONF $LB_CONF2 \
   --network-configuration "awsvpcConfiguration={subnets=[$subnet1, $subnet2],securityGroups=[$groupId],assignPublicIp=ENABLED}" \
@@ -81,3 +81,5 @@ aws ecs delete-service --cluster adora-prod --service adora-prod-service
 aws ecs deregister-task-definition \
   --task-definition adora_prod_family:1
 # excluir o cluster
+
+# curl -f http://localhost:3100/api/health || exit 1
