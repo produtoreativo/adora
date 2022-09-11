@@ -42,6 +42,9 @@ subnet2=$(aws ec2 describe-subnets --query "Subnets[*].SubnetId" --filter "Name=
 echo "Subnets da VPC : [$subnet1, $subnet2] de zonas diferentes"
 echo "Security Group $groupId"
 
+# aws ec2 describe-subnets --filter "Name=tag:Name,Values=adora-subnet2"
+# aws ec2 describe-subnets --filter "Name=tag:Name,Values=adora-subnet1"
+
 LB_ARN=$(aws elbv2 describe-load-balancers --names adora-load-balancer --query "LoadBalancers[*].LoadBalancerArn" --output text)
 echo "Load Balancer: $LB_ARN"
 TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --names adora-alb-tg-https --query "TargetGroups[*].TargetGroupArn" --output text)
