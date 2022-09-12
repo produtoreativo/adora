@@ -29,7 +29,13 @@ jobs:
         echo PORT=${{ secrets.PORT }} >> .env
         echo DATABASE_SSL=true >> .env
         cat .env
-    
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run test
+      run: npm run test
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -73,3 +79,4 @@ jobs:
           docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker stop adora
           docker run --rm -d -p 3100:3100 --name adora $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+         # docker exec adora npm run m:run
