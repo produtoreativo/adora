@@ -3,7 +3,7 @@ name: Deploy to ECR
 on:
   push:
     branches:
-      - '**'
+      - 'master'
 
 jobs:
   build_and_deploy:
@@ -76,7 +76,7 @@ jobs:
             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker stop adora
             docker run --rm -d -p 3100:3100 --name adora $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            # docker exec adora npm run m:run
+            docker exec adora npm run m:run
 
   k6:
     name: K6 test
