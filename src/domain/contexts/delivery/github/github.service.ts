@@ -20,7 +20,7 @@ export class GithubService {
   ) {}
 
   async createTask(applicationId: number, payload: StartCycle): Promise<Event> {
-    const hackDTO = new HackDTO;
+    const hackDTO = new HackDTO();
     hackDTO.data = {
       ref: payload.data.ref,
       name: payload.data.name,
