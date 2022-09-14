@@ -25,23 +25,23 @@ const commonDbConfigOpts = {
   schema: process.env.DB_MAIN_SCHEMA,
 };
 
-const defaultDbConfig = registerAs('database', () => {
-  return {
-    ...commonDbConfigOpts,
+export default registerAs('database', () => {
+  let cliOpts = {
     migrations: [`${__dirname}/**/migrations/*.ts`],
     cli: {
       migrationsDir: 'src/migrations',
     },
   };
-});
-export default defaultDbConfig;
-
-export const seedDbConfig = registerAs('database', () => {
+  if (process.env.SEED) {
+    cliOpts = {
+      migrations: [`${__dirname}/**/seeds/*.ts`],
+      cli: {
+        migrationsDir: 'src/seeds',
+      },
+    };
+  }
   return {
     ...commonDbConfigOpts,
-    migrations: [`${__dirname}/**/seeds/*.ts`],
-    cli: {
-      migrationsDir: 'src/seeds',
-    },
+    ...cliOpts,
   };
 });
