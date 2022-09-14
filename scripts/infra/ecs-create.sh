@@ -27,7 +27,7 @@ echo " Image URL $IMAGE_URL"
 
 
 #aws ecs list-task-definitions
-#aws ecs describe-task-definition --task-definition adora_prod_family:3
+#aws ecs describe-task-definition --task-definition adora_prod_family:4
 
 aws ecs register-task-definition \
   --family adora_prod_family \
@@ -37,6 +37,9 @@ aws ecs register-task-definition \
   --cpu 256\
   --memory 512 \
   --container-definitions "[{\"name\": \"adora-ms\",\"image\": \"$IMAGE_URL\",\"memory\": 300, \"memoryReservation\": 128,\"portMappings\": [{\"containerPort\": 3100}]}]"
+
+# exportar para usar no Github actions
+aws ecs describe-task-definition --task-definition adora_prod_family --query taskDefinition > scripts/infra/task-definition.json
 
 # aws ecs list-task-definitions --family-prefix adora_prod_family
 SG_ECS_ID=$(aws ec2 describe-security-groups --filter "Name=group-name,Values=adora-sg-ecs" --query "SecurityGroups[*].GroupId" --output text) 

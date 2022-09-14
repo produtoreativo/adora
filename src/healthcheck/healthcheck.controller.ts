@@ -17,7 +17,7 @@ export class HealthcheckController {
   // @HealthCheck()
   check() {
     return {
-      status: 'ok'
+      status: 'ok ECS'
     };
   }
 }
