@@ -25,6 +25,10 @@ IMAGE_TAG=$(aws ecr describe-images --repository-name adora --output text --quer
 IMAGE_URL=$ECR_REPO_URL:$IMAGE_TAG
 echo " Image URL $IMAGE_URL"
 
+
+#aws ecs list-task-definitions
+#aws ecs describe-task-definition --task-definition adora_prod_family:3
+
 aws ecs register-task-definition \
   --family adora_prod_family \
   --network-mode awsvpc \
@@ -35,35 +39,30 @@ aws ecs register-task-definition \
   --container-definitions "[{\"name\": \"adora-ms\",\"image\": \"$IMAGE_URL\",\"memory\": 300, \"memoryReservation\": 128,\"portMappings\": [{\"containerPort\": 3100}]}]"
 
 # aws ecs list-task-definitions --family-prefix adora_prod_family
-groupId=$(aws ec2 describe-security-groups --filter "Name=group-name,Values=adora-sg" --query "SecurityGroups[*].GroupId" --output text) 
+SG_ECS_ID=$(aws ec2 describe-security-groups --filter "Name=group-name,Values=adora-sg-ecs" --query "SecurityGroups[*].GroupId" --output text) 
 subnet1=$(aws ec2 describe-subnets --query "Subnets[*].SubnetId" --filter "Name=tag:Name,Values=adora-subnet1" --output text)
 subnet2=$(aws ec2 describe-subnets --query "Subnets[*].SubnetId" --filter "Name=tag:Name,Values=adora-subnet2" --output text)
-
 echo "Subnets da VPC : [$subnet1, $subnet2] de zonas diferentes"
-echo "Security Group $groupId"
+echo "Security Group $SG_ECS_ID"
 
 # aws ec2 describe-subnets --filter "Name=tag:Name,Values=adora-subnet2"
 # aws ec2 describe-subnets --filter "Name=tag:Name,Values=adora-subnet1"
 
 LB_ARN=$(aws elbv2 describe-load-balancers --names adora-load-balancer --query "LoadBalancers[*].LoadBalancerArn" --output text)
 echo "Load Balancer: $LB_ARN"
-TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --names adora-alb-tg-https --query "TargetGroups[*].TargetGroupArn" --output text)
-TARGET_GROUP_ARN2=$(aws elbv2 describe-target-groups --names adora-alb-tg-http --query "TargetGroups[*].TargetGroupArn" --output text)
-echo "Target Groups: $TARGET_GROUP_ARN & $TARGET_GROUP_ARN2"
+TARGET_GROUP_ARN=$(aws elbv2 describe-target-groups --names adora-alb-tg --query "TargetGroups[*].TargetGroupArn" --output text)
+echo "Target Group: $TARGET_GROUP_ARN"
 
 LB_CONF=targetGroupArn=$TARGET_GROUP_ARN,containerName=adora-ms,containerPort=3100
 echo "Load Balancer config: $LB_CONF"
 
-LB_CONF2=targetGroupArn=$TARGET_GROUP_ARN2,containerName=adora-ms,containerPort=3100
-echo "Load Balancer config: $LB_CONF2"
-
 aws ecs create-service \
   --cluster adora-prod \
   --service-name adora-prod-service \
-  --task-definition adora_prod_family:3 \
+  --task-definition adora_prod_family:4 \
   --desired-count 1 \
-  --load-balancers $LB_CONF $LB_CONF2 \
-  --network-configuration "awsvpcConfiguration={subnets=[$subnet1, $subnet2],securityGroups=[$groupId],assignPublicIp=ENABLED}" \
+  --load-balancers $LB_CONF \
+  --network-configuration "awsvpcConfiguration={subnets=[$subnet1, $subnet2],securityGroups=[$SG_ECS_ID],assignPublicIp=ENABLED}" \
   --launch-type "FARGATE"
 
 
