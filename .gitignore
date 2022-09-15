@@ -4,6 +4,9 @@
 /dist
 /node_modules
 
+.build
+.serverless
+
 # Logs
 logs
 *.log
