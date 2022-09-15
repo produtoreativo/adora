@@ -5,11 +5,11 @@ import { NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
-  app.enableCors({
-    credentials: true,
-    origin: true,
-  });
+  // app.setGlobalPrefix('api');
+  // app.enableCors({
+  //   credentials: true,
+  //   origin: true,
+  // });
 
   const config = new DocumentBuilder()
     .setTitle('ADORA Metrics')
@@ -32,6 +32,6 @@ async function bootstrap() {
       .then(() => console.log('Process terminated'));
   });
 
-  await app.listen(process.env.PORT || 3000, '0.0.0.0');
+  await app.listen(process.env.PORT || 3100, '0.0.0.0');
 }
 bootstrap();
