@@ -69,3 +69,14 @@ aws elbv2 create-listener \
     --load-balancer-arn $LB_ARN \
     --protocol HTTP --port 80  \
     --default-actions Type=forward,TargetGroupArn=$TARGET_GROUP_ARN
+
+aws elbv2 describe-listeners --load-balancer-arn $LB_ARN --query "Listeners[*].ListenerArn" --output text
+ 
+# aws elbv2 describe-listeners \
+#   --listener-arns arn:aws:elasticloadbalancing:us-east-1:268318768905:listener/app/adora-load-balancer/a4e739978f12f11f/eae743c9679c1ab6
+#--load-balancer-arn $LB_ARN  \
+
+# redirecionar HTTP para HTTPS
+aws elbv2 modify-listener \
+  --listener-arn arn:aws:elasticloadbalancing:us-east-1:268318768905:listener/app/adora-load-balancer/a4e739978f12f11f/eae743c9679c1ab6 \
+  --default-actions '[{"Type": "redirect", "RedirectConfig": {"Protocol": "HTTPS", "Port": "443", "Host": "#{host}", "Query": "#{query}", "Path": "/#{path}", "StatusCode": "HTTP_301"}}]'
