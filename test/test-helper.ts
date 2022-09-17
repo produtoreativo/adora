@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { Repository } from 'typeorm';
 
 export type MockType<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types

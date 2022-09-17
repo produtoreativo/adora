@@ -1,8 +1,8 @@
 import * as Joi from "joi";
 
-import { ConfigModule, ConfigService } from "@nestjs/config";
-
 import { Application } from "./domain/entities/application.entity";
+
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ApplicationModule } from "./domain/contexts/application/application.module";
 import { DeliveryModule } from "./domain/contexts/delivery/delivery.module";
 import { Event } from "./domain/entities/event.entity";

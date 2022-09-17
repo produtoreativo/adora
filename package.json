@@ -95,8 +95,8 @@
   },
   "lint-staged": {
     "src/**/*": [
-      "yarn lint",
-      "yarn format"
+      "eslint -c .eslintrc.js --fix",
+      "prettier --write"
     ]
   },
   "config": {
