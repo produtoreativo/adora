@@ -1,9 +1,9 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from "typeorm";
 
-import { Application } from './application.entity';
-import { BaseEntity } from './base.entity';
+import { Application } from "./application.entity";
+import { BaseEntity } from "./base.entity";
 
-@Entity({ name: 'deployments' })
+@Entity({ name: "deployments" })
 export class Deployment extends BaseEntity {
   @Column()
   name: string;
@@ -14,10 +14,9 @@ export class Deployment extends BaseEntity {
   @Column()
   applicationId: number;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: "json", nullable: true })
   payload: JSON;
 
   @ManyToOne((type) => Application)
   application: Application;
-
 }

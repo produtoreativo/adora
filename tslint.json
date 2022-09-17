@@ -1,22 +1,22 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-      "tslint:recommended",
-      "tslint-config-prettier"
-    ],
-    "jsRules": {},
-    "linterOptions": {
-      "exclude": [
-        "src/scripts/**/*.ts"
-      ]
-    },
-    "rules": {
-      "ordered-imports": false,
-      "object-literal-sort-keys": false,
-      "no-string-literal": false,
-      "no-async-without-await": true,
-      "no-return-await": true,
-      "no-floating-promises": true
-    },
-    "rulesDirectory": []
-  }
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
+  "jsRules": {},
+  "linterOptions": {
+    "exclude": [
+      "src/scripts/**/*.ts"
+    ]
+  },
+  "rules": {
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-string-literal": false,
+    "no-async-without-await": true,
+    "no-return-await": true,
+    "no-floating-promises": true
+  },
+  "rulesDirectory": []
+}

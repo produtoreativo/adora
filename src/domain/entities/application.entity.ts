@@ -1,16 +1,16 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from "typeorm";
 
-import { BaseEntity } from './base.entity';
-import { Deployment } from './deployment.entity';
-import { Event } from './event.entity';
-import { Task } from './task.entity';
+import { BaseEntity } from "./base.entity";
+import { Deployment } from "./deployment.entity";
+import { Event } from "./event.entity";
+import { Task } from "./task.entity";
 
-@Entity({ name: 'applications' })
+@Entity({ name: "applications" })
 export class Application extends BaseEntity {
   @Column()
   name: string;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: "json", nullable: true })
   configuration: JSON;
 
   @OneToMany((type) => Event, (events) => events.application)

@@ -1,4 +1,3 @@
-
 class GithubDeploy {
   deployment_status: {
     state: string;

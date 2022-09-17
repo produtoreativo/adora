@@ -1,17 +1,14 @@
-import {
-  MockType,
-  repositoryMockFactory,
-} from '../../../../../test/test-helper';
-import { Test, TestingModule } from '@nestjs/testing';
+import { MockType, repositoryMockFactory } from "../../../../../test/test-helper";
+import { Test, TestingModule } from "@nestjs/testing";
 
-import { Deployment } from '../../../entities/deployment.entity';
-import { Event } from '../../../entities/event.entity';
-import { GithubService } from './github.service';
-import { Repository } from 'typeorm';
-import { Task } from '../../../entities/task.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { Deployment } from "../../../entities/deployment.entity";
+import { Event } from "../../../entities/event.entity";
+import { GithubService } from "./github.service";
+import { Repository } from "typeorm";
+import { Task } from "../../../entities/task.entity";
+import { getRepositoryToken } from "@nestjs/typeorm";
 
-describe('GitHub Service', () => {
+describe("GitHub Service", () => {
   let service: GithubService;
   let eventRepository: MockType<Repository<Event>>;
   let taskRepository: MockType<Repository<Task>>;
@@ -51,7 +48,7 @@ describe('GitHub Service', () => {
     deploymentRepository = module.get(getRepositoryToken(Deployment));
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

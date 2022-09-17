@@ -1,17 +1,17 @@
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
-import { Application } from './domain/entities/application.entity';
-import { ApplicationModule } from './domain/contexts/application/application.module';
-import { DeliveryModule } from './domain/contexts/delivery/delivery.module';
-import { Event } from './domain/entities/event.entity';
-import { GithubModule } from './domain/contexts/delivery/github/github.module';
-import { Module } from '@nestjs/common';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import dbConfiguration from '../db.config';
-import { join } from 'path';
+import { Application } from "./domain/entities/application.entity";
+import { ApplicationModule } from "./domain/contexts/application/application.module";
+import { DeliveryModule } from "./domain/contexts/delivery/delivery.module";
+import { Event } from "./domain/entities/event.entity";
+import { GithubModule } from "./domain/contexts/delivery/github/github.module";
+import { Module } from "@nestjs/common";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import dbConfiguration from "../db.config";
+import { join } from "path";
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { join } from 'path';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        ...configService.get('database'),
+        ...configService.get("database"),
       }),
     }),
     TypeOrmModule.forFeature([Application, Event]),
@@ -37,9 +37,9 @@ import { join } from 'path';
     DeliveryModule,
     GithubModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static'),
-      serveRoot: '/docs',
-      exclude: ['/api*'],
+      rootPath: join(__dirname, "..", "static"),
+      serveRoot: "/docs",
+      exclude: ["/api*"],
     }),
   ],
 })

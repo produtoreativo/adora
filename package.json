@@ -95,8 +95,8 @@
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "tslint -c tslint.json --fix",
-      "prettier --write"
+      "yarn lint",
+      "yarn format"
     ]
   },
   "config": {
