@@ -26,8 +26,6 @@ jobs:
         echo DB_MAIN_PASSWORD=${{ secrets.DB_MAIN_PASSWORD }} >> .env
         echo DB_MAIN_DATABASE=${{ secrets.DB_MAIN_DATABASE }} >> .env
         echo DB_MAIN_SCHEMA=${{ secrets.DB_MAIN_SCHEMA }} >> .env
-        echo SONAR_RUN_PROJECT_KEY=${{ secrets.SONAR_RUN_PROJECT_KEY }} >> .env
-        echo SONAR_ORGANIZATION=${{ secrets.SONAR_ORGANIZATION }} >> .env
         echo PORT=${{ secrets.PORT }} >> .env
         echo DATABASE_SSL=true >> .env
         cat .env
@@ -50,6 +48,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_RUN_PROJECT_KEY: ${{ secrets.SONAR_RUN_PROJECT_KEY }}
+        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
         
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
