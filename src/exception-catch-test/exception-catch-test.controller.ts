@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-@Controller('exception-catch-hello-world')
-export class ExceptionCatchHelloWorldController {
+@Controller('exception-catch-test')
+export class ExceptionCatchTestController {
   @Get('/404')
   404() {
     try {

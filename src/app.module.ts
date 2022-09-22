@@ -12,7 +12,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import dbConfiguration from '../db.config';
 import { join } from 'path';
-import { ExceptionCatchHelloWorldController } from './exception-catch-test/exception-catch-test.controller';
+import { ExceptionCatchTestController } from './exception-catch-test/exception-catch-test.controller';
 
 @Module({
   imports: [
@@ -43,6 +43,6 @@ import { ExceptionCatchHelloWorldController } from './exception-catch-test/excep
       exclude: ['/api*'],
     }),
   ],
-  controllers: [ExceptionCatchHelloWorldController],
+  controllers: [ExceptionCatchTestController],
 })
 export class AppModule {}

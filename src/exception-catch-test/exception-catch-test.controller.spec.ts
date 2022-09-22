@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ExceptionCatchHelloWorldController } from './exception-catch-test.controller';
+import { ExceptionCatchTestController } from './exception-catch-test.controller';
 
 describe('ExceptionCatchHelloWorldController', () => {
-  let controller: ExceptionCatchHelloWorldController;
+  let controller: ExceptionCatchTestController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ExceptionCatchHelloWorldController],
+      controllers: [ExceptionCatchTestController],
     }).compile();
 
-    controller = module.get<ExceptionCatchHelloWorldController>(
-      ExceptionCatchHelloWorldController,
+    controller = module.get<ExceptionCatchTestController>(
+      ExceptionCatchTestController,
     );
   });
 
