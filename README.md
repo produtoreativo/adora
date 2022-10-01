@@ -11,6 +11,9 @@
 > [2 Coríntios 4:18](https://www.bibliaonline.com.br/niv/2co/4/18)
 
 ```shell
+
+DOCKER_BUILDKIT=0 docker build -t adora . #desabilita o buildkit para não dar erro
+
 docker build -t adora .
 docker run --rm -d -p 3100:3100 adora
 docker rm $(docker stop $(docker ps -a -q --filter ancestor=adora --format="{{.ID}}"))
