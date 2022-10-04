@@ -4,6 +4,10 @@ import { Application } from './application.entity';
 import { BaseEntity } from './base.entity';
 import { Task } from './task.entity';
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+const dbMainSchema = process.env.DB_MAIN_SCHEMA;
+
 export enum EventType {
   START_CYCLE = 'START_CYCLE',
   FINISH = 'FINISH',
@@ -14,7 +18,7 @@ export enum EventType {
   GENERIC = 'GENERIC',
 }
 
-@Entity({ name: 'events' })
+@Entity({ name: 'events', schema: dbMainSchema })
 export class Event extends BaseEntity {
   @Column()
   name: string;

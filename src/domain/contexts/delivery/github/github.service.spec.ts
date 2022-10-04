@@ -29,7 +29,7 @@ describe('GitHub Service', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GithubService,
+        { provide: GithubService, useValue: {} },
         {
           provide: getRepositoryToken(Event),
           useFactory: repositoryMockFactory,
