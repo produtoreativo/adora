@@ -3,7 +3,12 @@ import { Column, Entity, ManyToOne } from "typeorm";
 import { Application } from "./application.entity";
 import { BaseEntity } from "./base.entity";
 
-@Entity({ name: "deployments" })
+
+import * as dotenv from "dotenv";
+dotenv.config();
+const dbMainSchema = process.env.DB_MAIN_SCHEMA;
+
+@Entity({ name: "deployments", schema: dbMainSchema })
 export class Deployment extends BaseEntity {
   @Column()
   name: string;

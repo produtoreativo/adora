@@ -1,9 +1,20 @@
-import { Column, Entity, ManyToOne, OneToMany, CreateDateColumn } from "typeorm";
+
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+} from "typeorm";
 import { Application } from "./application.entity";
 import { BaseEntity } from "./base.entity";
 import { Event } from "./event.entity";
 
-@Entity({ name: "tasks" })
+import * as dotenv from "dotenv";
+dotenv.config();
+const dbMainSchema = process.env.DB_MAIN_SCHEMA;
+
+@Entity({ name: "tasks", schema: dbMainSchema })
 export class Task extends BaseEntity {
   @Column()
   name: string;
@@ -23,6 +34,7 @@ export class Task extends BaseEntity {
 
   // @CreateDateColumn({ type: 'timestamptz', nullable: true, default: () => null })
   @Column({ type: "timestamptz", nullable: true, default: null })
+
   deployedAt!: Date;
 
   @Column()

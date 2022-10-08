@@ -12,4 +12,8 @@ export class ApplicationController {
   async createApplication(@Body() application: Application): Promise<Application> {
     return this.applicationService.createApplication(application);
   }
+  @Get('health')
+  health() {
+    return 'OK';
+  }
 }
