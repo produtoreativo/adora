@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Application } from '../..//entities/application.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Application } from "../..//entities/application.entity";
 
-import { Repository } from 'typeorm';
+import { Repository } from "typeorm";
 
 @Injectable()
 export class ApplicationService {
@@ -13,8 +13,8 @@ export class ApplicationService {
 
   async createApplication(application: Application): Promise<Application> {
     return this.applicationRepository.save({
-      createdBy: '',
-      lastChangedBy: '',
+      createdBy: "",
+      lastChangedBy: "",
       ...application,
     });
   }

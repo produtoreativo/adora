@@ -1,17 +1,19 @@
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Application } from "./domain/entities/application.entity";
 
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ApplicationModule } from "./domain/contexts/application/application.module";
+import { DeliveryModule } from "./domain/contexts/delivery/delivery.module";
+import { Event } from "./domain/entities/event.entity";
+import { GithubModule } from "./domain/contexts/delivery/github/github.module";
+import { Module } from "@nestjs/common";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import dbConfiguration from "../db.config";
+import { join } from "path";
 import { Application } from './domain/entities/application.entity';
-import { ApplicationModule } from './domain/contexts/application/application.module';
-import { DeliveryModule } from './domain/contexts/delivery/delivery.module';
-import { Event } from './domain/entities/event.entity';
-import { GithubModule } from './domain/contexts/delivery/github/github.module';
-import { Module } from '@nestjs/common';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import dbConfiguration from '../db.config';
-import { join } from 'path';
+
 import { ExceptionCatchTestController } from './exception-catch-test/exception-catch-test.controller';
 
 @Module({
@@ -30,7 +32,7 @@ import { ExceptionCatchTestController } from './exception-catch-test/exception-c
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        ...configService.get('database'),
+        ...configService.get("database"),
       }),
     }),
     TypeOrmModule.forFeature([Application, Event]),
@@ -38,9 +40,9 @@ import { ExceptionCatchTestController } from './exception-catch-test/exception-c
     DeliveryModule,
     GithubModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static'),
-      serveRoot: '/docs',
-      exclude: ['/api*'],
+      rootPath: join(__dirname, "..", "static"),
+      serveRoot: "/docs",
+      exclude: ["/api*"],
     }),
   ],
   controllers: [ExceptionCatchTestController],

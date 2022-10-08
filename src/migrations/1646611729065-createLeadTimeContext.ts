@@ -26,6 +26,7 @@ export class createLeadTimeContext1646611729065 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TYPE "events_eventtype_enum" AS ENUM('START_CYCLE', 'FINISH', 'SHIP', 'PROMOTE', 'FAIL', 'RECOVERY', 'GENERIC')`,
     );
+
     await queryRunner.query(
       `ALTER TABLE "${dbMainSchema}"."events" ALTER COLUMN "eventType" DROP DEFAULT`,
     );
@@ -58,6 +59,7 @@ export class createLeadTimeContext1646611729065 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TYPE "events_eventtype_enum_old" AS ENUM('START_CYCLE', 'SHIP', 'PROMOTE', 'FAIL', 'RECOVERY', 'GENERIC')`,
     );
+
     await queryRunner.query(
       `ALTER TABLE "${dbMainSchema}"."events" ALTER COLUMN "eventType" DROP DEFAULT`,
     );
@@ -87,6 +89,7 @@ export class createLeadTimeContext1646611729065 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TYPE "events_eventtype_enum_old" RENAME TO "events_eventtype_enum"`,
     );
+
     await queryRunner.query(
       `ALTER TABLE "${dbMainSchema}"."tasks" DROP COLUMN "deployedAt"`,
     );

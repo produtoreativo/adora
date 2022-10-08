@@ -33,6 +33,7 @@ export class CreateInitialDomain1646305917896 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
+
       `ALTER TABLE "${dbMainSchema}"."events" DROP CONSTRAINT "FK_45e4d9c7121e534fb79a6150b74"`,
     );
     await queryRunner.query(

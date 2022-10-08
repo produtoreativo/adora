@@ -1,12 +1,12 @@
-import { MockType, repositoryMockFactory } from '../../../../test/test-helper';
-import { Test, TestingModule } from '@nestjs/testing';
+import { MockType, repositoryMockFactory } from "../../../../test/test-helper";
+import { Test, TestingModule } from "@nestjs/testing";
 
-import { Application } from '../../entities/application.entity';
-import { ApplicationService } from './application.service';
-import { Repository } from 'typeorm';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { Application } from "../../entities/application.entity";
+import { ApplicationService } from "./application.service";
+import { Repository } from "typeorm";
+import { getRepositoryToken } from "@nestjs/typeorm";
 
-describe('Application Service', () => {
+describe("Application Service", () => {
   let service: ApplicationService;
   let repository: MockType<Repository<Application>>;
 
@@ -34,7 +34,7 @@ describe('Application Service', () => {
     repository = module.get(getRepositoryToken(Application));
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

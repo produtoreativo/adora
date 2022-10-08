@@ -1,3 +1,4 @@
+
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 import * as dotenv from 'dotenv';
@@ -18,6 +19,7 @@ export class CreateDeployEntity1646426358651 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
+
       `ALTER TABLE "${dbMainSchema}"."deployments" DROP CONSTRAINT "FK_dca3b4d49c7df1e3a6a93b74fd7"`,
     );
     await queryRunner.query(`DROP TABLE "${dbMainSchema}"."deployments"`);
