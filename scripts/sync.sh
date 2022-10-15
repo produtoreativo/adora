@@ -1,6 +1,6 @@
 #!/bin/sh -x
 CURRENT=`git branch | grep "*" | awk '{print $2}'`
-git checkout beta
-git pull --rebase origin beta
+git checkout lambda
+git pull --rebase origin lambda
 git checkout $CURRENT
-git rebase beta
+git rebase lambda

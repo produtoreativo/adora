@@ -1,6 +1,6 @@
 #!/bin/sh -x
 FB=hotfix($1)
 git stash
-git checkout beta
-git pull --rebase origin beta
-git checkout -b $FB beta
+git checkout lambda
+git pull --rebase origin lambda
+git checkout -b $FB lambda
