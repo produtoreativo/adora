@@ -1,7 +1,7 @@
 #!/bin/sh -x
 FB="feat(#$1)"
 git stash
-git checkout master
-git pull --rebase origin master
-git checkout -b $FB master
+git checkout lambda
+git pull --rebase origin lambda
+git checkout -b $FB lambda
 git status
