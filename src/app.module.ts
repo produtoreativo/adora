@@ -13,10 +13,25 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 // import dbConfiguration from '../db.config';
 import { join } from 'path';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
-
+import { Leadtime } from './leadtime/leadtime.entity';
+import { LeadtimeModule } from './leadtime/leadtime.module';
+import { TypeDORMModule } from './nest-typedorm/typedorm.module';
+import GlobalTable from './leadtime/global.table';
 @Module({
   imports: [
     HealthcheckModule,
+    TypeDORMModule.forRoot(
+      [Leadtime],
+      GlobalTable,
+      {
+        region: 'us-east-1',
+        credentials: {
+          accessKeyId: process.env.APP_ACCESS_KEY_ID,
+          secretAccessKey: process.env.APP_SECRET_ACCESS_KEY,
+        }
+      }
+    ),
+    LeadtimeModule,
     // ConfigModule.forRoot({
     //   isGlobal: true,
     //   load: [dbConfiguration],
