@@ -20,6 +20,7 @@ export class LeadtimeController {
   async createEvent(
     @Body() payload: any,
   ): Promise<any> {
+    console.log( 'New Commit');
     console.log( payload )
     const created = await this.leadtimeService.createEvent(payload);
     console.log( created );
