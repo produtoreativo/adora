@@ -1,0 +1,58 @@
+name: Deploy to ECR
+
+on:
+  push:
+    branches:
+      - 'lambda'
+
+jobs:
+  
+  build:
+    
+    name: Build Image
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Create env file
+      run: |
+        touch .env
+        echo DB_MAIN_HOST=${{ secrets.DB_MAIN_HOST }} >> .env
+        echo DB_MAIN_PORT=${{ secrets.DB_MAIN_PORT }} >> .env
+        echo DB_MAIN_USER=${{ secrets.DB_MAIN_USER }} >> .env
+        echo DB_MAIN_PASSWORD=${{ secrets.DB_MAIN_PASSWORD }} >> .env
+        echo DB_MAIN_DATABASE=${{ secrets.DB_MAIN_DATABASE }} >> .env
+        echo DB_MAIN_SCHEMA=${{ secrets.DB_MAIN_SCHEMA }} >> .env
+        echo PORT=${{ secrets.PORT }} >> .env
+        echo DATABASE_SSL=true >> .env
+        cat .env
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-ecr
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: lambda
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        echo "Pushing image to ECR... $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+    - name: Log out of Amazon ECR
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}
