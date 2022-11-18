@@ -9,7 +9,6 @@ env:
   ECS_SERVICE: adora-prod-service                 # set this to your Amazon ECS service name
   ECS_CLUSTER: adora-prod                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: scripts/infra/task-definition.json # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: adora-ms 
 
 jobs:
@@ -59,7 +58,6 @@ jobs:
         echo "Pushing image to ECR... $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG "
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
     - name: Log out of Amazon ECR
       if: always()
       run: docker logout ${{ steps.login-ecr.outputs.registry }}
@@ -76,7 +74,7 @@ jobs:
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-ecr.outputs.image }}
 
-    - name: Deploy Amazon ECS task definition
+   - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}

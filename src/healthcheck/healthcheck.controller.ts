@@ -17,7 +17,7 @@ export class HealthcheckController {
   // @HealthCheck()
   check() {
     return {
-      status: 'ok ECS, cnsegsui buildar'
+      status: 'ok ECS, cnsegsui buildar 2'
     };
   }
 }
