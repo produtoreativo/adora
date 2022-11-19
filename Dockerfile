@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/nodejs:16 As development
+FROM public.ecr.aws/lambda/nodejs:18 As development
 
 WORKDIR /usr/src/app
 COPY package*.json ./
@@ -8,7 +8,7 @@ RUN yarn install --frozen-lockfile
 COPY  . .
 
 
-FROM public.ecr.aws/lambda/nodejs:16 As build
+FROM public.ecr.aws/lambda/nodejs:18 As build
 
 WORKDIR /usr/src/app
 COPY  package*.json ./
@@ -21,7 +21,7 @@ ENV NODE_ENV production
 # RUN npm ci --only=production && npm cache clean --force
 # RUN yarn install --frozen-lockfile
 
-FROM public.ecr.aws/lambda/nodejs:16 As production
+FROM public.ecr.aws/lambda/nodejs:18 As production
 #https://www.cloudtechsimplified.com/run-docker-containers-images-from-ecr-in-aws-lambda-along-with-cicd/
 WORKDIR ${LAMBDA_TASK_ROOT} 
 COPY  --from=build /usr/src/app/node_modules ./node_modules

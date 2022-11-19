@@ -3,7 +3,7 @@ name: Deploy to ECR
 on:
   push:
     branches:
-      - 'lambda'
+      - 'lambda2'
 
 jobs:
   

@@ -19,7 +19,7 @@ export class HealthcheckController {
   // @HealthCheck()
   check() {
     return {
-      status: 'ok ECS'
+      status: 'ok lambda 4'
     };
   }
 
