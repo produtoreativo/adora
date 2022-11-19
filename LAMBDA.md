@@ -1,3 +1,11 @@
+# Versões
+
+```sh
+node -v 
+# v18.8.0
+npm -v
+# 8.18.0
+```
 # criar credenciais
 
 ```sh
