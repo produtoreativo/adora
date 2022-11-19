@@ -4,16 +4,15 @@ plugins:
  - serverless-plugin-typescript
  - serverless-plugin-optimize
  - serverless-offline
- - serverless-offline-watcher
+#  - serverless-offline-watcher
 
-custom:
-  serverless-offline-watcher:
-    - path: src/lambda.ts
-      command: echo "lambda.ts was modified!"
-    - path:
-        - src
-      command: echo "api folder or js file in cow folder was modified!"
-
+# custom:
+#   serverless-offline-watcher:
+#     - path: src/lambda.ts
+#       command: echo "lambda.ts was modified!"
+#     - path:
+#         - src
+#       command: echo "api folder or js file in cow folder was modified!"
 
 provider:
  name: aws
