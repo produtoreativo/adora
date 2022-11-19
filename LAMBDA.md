@@ -52,3 +52,6 @@ Conf no serverless.yaml e main adaptada em src/lambda.ts
 sls offline start
 ```
 
+
+
+yarn add -D serverless-plugin-typescript serverless-plugin-optimize serverless-offline plugin
