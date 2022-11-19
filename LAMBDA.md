@@ -9,7 +9,21 @@ npm -v
 yarn -v
 # 1.22.19
 ```
+
 ## criar credenciais
+
+Criar pares de chaves em https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/security_credentials  
+Lembrar de trocar a regiao na URL caso use outra.
+
+## Instalar e autenticar o CLI da AWS
+Encontra em https://docs.aws.amazon.com/pt_br/cli/latest/userguide/getting-started-install.html
+
+Logar o cli e passar as info: dados da chave, region e formato json
+```sh
+aws configure
+```
+
+## configurar as crendentials para o CLI da AWS
 
 ```sh
 source .env
@@ -34,4 +48,7 @@ Conf no serverless.yaml e main adaptada em src/lambda.ts
 
 ## Execução
 
+```sh
 sls offline start
+```
+
