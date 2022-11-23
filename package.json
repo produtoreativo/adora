@@ -29,12 +29,17 @@
     "doc:ship": "mkdir -p dist/static && cp -R documentation/* dist/static"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.216.0",
+    "@aws-sdk/lib-dynamodb": "^3.216.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.2.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^8.0.3",
+    "@typedorm/common": "^1.15.2",
+    "@typedorm/core": "^1.15.2",
     "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1261.0",
     "aws-serverless-express": "^3.4.0",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
