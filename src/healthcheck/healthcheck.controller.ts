@@ -19,7 +19,7 @@ export class HealthcheckController {
   // @HealthCheck()
   check() {
     return {
-      status: 'ok lambda 4'
+      status: 'ok lambda 2'
     };
   }
 

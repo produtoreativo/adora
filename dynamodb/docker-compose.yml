@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  dynamodb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - adora-dynamodb:/home/dynamodblocal/db
+
+volumes:
+  adora-dynamodb:
+    driver: local

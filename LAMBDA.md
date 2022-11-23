@@ -27,6 +27,7 @@ aws configure
 
 ```sh
 source .env
+# observar o .env-example para configurar
 mkdir ~/.aws
 touch ~/.aws/credentials
 
@@ -35,16 +36,32 @@ echo "aws_access_key_id = $APP_ACCESS_KEY_ID" >> ~/.aws/credentials
 echo "aws_secret_access_key = $APP_SECRET_ACCESS_KEY" >> ~/.aws/credentials
 ```
 
-## deploy
+## Provisionamento
 
 Usando o https://www.serverless.com/ para deploy e execução local no formato de lambda
 
 ```sh
 npm install -g serverless
 ```
-## Configuração 
+## Como funcioa
 
-Conf no serverless.yaml e main adaptada em src/lambda.ts
+O Serverless exige o arquivo serverless.yaml com a configuração adequada para deployar ou rodar localmente.  
+
+O código do Nest foi adaptado pra rodar com o Express habilitado para Lambda e construímos isso em src/lambda.ts
+
+Observar se precisa colocar mais algum plugin no serverless.
+
+## Levantar o Dynamo local
+```sh
+cd ./dynamodb && docker-compose up -d
+```
+
+Ou usar a sessão custom no serverless.yaml e executar:
+```sh
+#sls dynamodb install 
+#sls dynamodb start
+sls dynamodb migrate
+```
 
 ## Execução
 
@@ -52,6 +69,18 @@ Conf no serverless.yaml e main adaptada em src/lambda.ts
 sls offline start
 ```
 
+Ou com hot-reload, esse parâmetro reloadHandler recarrega o nest em cada chamada, é aceitar isso em dev ou ter que configurar o nodemon porque o plugin offline recompila, mas não recarrega o handler.
 
+```sh
+sls offline start --reloadHandler
+```
 
-yarn add -D serverless-plugin-typescript serverless-plugin-optimize serverless-offline plugin
+## Migration do Dynamo
+```sh
+serverless dynamodb migrate
+```
+## Deploy
+
+```sh
+sls deploy
+```
