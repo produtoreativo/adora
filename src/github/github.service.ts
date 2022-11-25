@@ -8,7 +8,9 @@ import {DynamoDBClient} from '@aws-sdk/client-dynamodb';
 import EventTable from './event.table';
 
 
-const documentClient = new DocumentClientV3(new DynamoDBClient({}));
+const documentClient = new DocumentClientV3(new DynamoDBClient({
+  endpoint: 'http://localhost:8000',
+}));
 createConnection({
   table: EventTable,
   entities: [Event],
