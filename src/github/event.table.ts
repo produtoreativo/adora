@@ -1,7 +1,7 @@
-import {Table, INDEX_TYPE} from '@typedorm/common';
+import { Table, INDEX_TYPE } from '@typedorm/common';
 
 const eventTable = new Table({
-  name: 'adora-dynamodb-dev',
+  name: process.env.DYNAMODB_TABLE,
   partitionKey: 'PK',
   sortKey: 'SK',
   indexes: {
