@@ -59,7 +59,7 @@ cd ./dynamodb && docker-compose up -d
 Ou usar a sessão custom no serverless.yaml e executar:
 ```sh
 #sls dynamodb install 
-#sls dynamodb start
+sls dynamodb start
 sls dynamodb migrate
 ```
 
