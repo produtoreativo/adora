@@ -1,24 +1,11 @@
-import {Attribute, Entity, AutoGenerateAttribute} from '@typedorm/common';
-import {AUTO_GENERATE_ATTRIBUTE_STRATEGY} from '@typedorm/common';
+import { Attribute, Entity, AutoGenerateAttribute } from '@typedorm/common';
+import { AUTO_GENERATE_ATTRIBUTE_STRATEGY } from '@typedorm/common';
 
 @Entity({
-  name: 'adora-dynamodb-dev',
+  name: 'events',
   primaryKey: {
-    partitionKey: 'EVENT#{{id}}',
-    sortKey: 'EVENT#{{id}}',
-  },
-  indexes: {
-    // specify GSI1 key - "GSI1" named global secondary index needs to exist in above table declaration
-    // GSI1: {
-    //   partitionKey: 'ORG#{{id}}#STATUS#{{status}}',
-    //   sortKey: 'ORG#{{id}}#ACTIVE#{{active}}',
-    //   type: INDEX_TYPE.GSI,
-    // },
-    // // specify LSI1 key
-    // LSI1: {
-    //   sortKey: 'TICKETS#UPDATED_AT#{{updatedAt}}',
-    //   type: INDEX_TYPE.LSI,
-    // },
+    partitionKey: 'id',
+    sortKey: 'id',
   },
 })
 export class Event {

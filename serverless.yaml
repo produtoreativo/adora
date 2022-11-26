@@ -11,10 +11,10 @@ custom:
     stages:
       - dev
     start:
+      docker: true
       port: 8000
       inMemory: true
       migrate: true
-    # Comment if you don't have a DynamoDB running locally
       noStart: true
     migration:
       dir: offline/migrations
@@ -47,19 +47,18 @@ functions:
           method: any
           path: /{any+}
 
-# resources:
-Resources:
-  TodosDynamoDbTable:
-    Type: 'AWS::DynamoDB::Table'
-    DeletionPolicy: Retain
-    Properties:
-      AttributeDefinitions:
-        -
-          AttributeName: id
-          AttributeType: S
-      KeySchema:
-        -
-          AttributeName: id
-          KeyType: HASH
-      BillingMode: PAY_PER_REQUEST
-      TableName: ${self:provider.environment.DYNAMODB_TABLE}
+resources:
+  Resources:
+    MainDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
