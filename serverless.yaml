@@ -26,9 +26,15 @@ provider:
   runtime: nodejs16.x
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+
   iam:
     role:
       statements:
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+          Resource:
+            - Fn::GetAtt: [ receiverQueue, Arn ]
         - Effect: Allow
           Action:
             - dynamodb:Query
@@ -39,6 +45,7 @@ provider:
             - dynamodb:DeleteItem
           Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
+
 functions:
   main:
     handler: src/lambda.handler
@@ -46,6 +53,14 @@ functions:
       - http:
           method: any
           path: /{any+}
+  receiver:
+    handler: src/handler.receiver
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - receiverQueue
+              - Arn
 
 resources:
   Resources:
@@ -62,3 +77,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+    receiverQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: receiverQueue
