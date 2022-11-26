@@ -1,6 +1,6 @@
 {
   "Table": {
-      "TableName": "adora-dynamodb-dev",
+      "TableName": "adora-dev",
       "KeySchema": [
           {
               "AttributeName": "id",

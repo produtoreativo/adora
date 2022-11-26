@@ -56,11 +56,11 @@ Observar se precisa colocar mais algum plugin no serverless.
 cd ./dynamodb && docker-compose up -d
 ```
 
-Ou usar a sessão custom no serverless.yaml e executar:
+Usar a sessão custom no serverless.yaml e executar:
 ```sh
 #sls dynamodb install 
 sls dynamodb start
-sls dynamodb migrate
+# sls dynamodb migrate
 ```
 
 ## Execução
