@@ -6,6 +6,9 @@ import { createConnection } from '@typedorm/core';
 import { DocumentClientV3 } from '@typedorm/document-client';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import EventTable from './event.table';
+import { SNS } from 'aws-sdk';
+import { InjectAwsService } from 'nest-aws-sdk';
+import { PublishInput } from 'aws-sdk/clients/sns';
 
 const awsAccessKey = process.env.AWS_ACCESS_KEY_ID;
 
@@ -26,13 +29,29 @@ createConnection({
 export class GithubService {
   entityManger = getEntityManager();
 
-  constructor() {} // @InjectAwsService(S3) private readonly s3: S3,
+  constructor(
+    @InjectAwsService(SNS)
+    private readonly snsService: SNS,
+  ) {} // @InjectAwsService(S3) private readonly s3: S3,
 
   async createEvent(payload: EventDto) {
     const event = new Event();
     event.name = payload.name;
     const response = await this.entityManger.create(event);
-    console.log(response);
+    const params: PublishInput = {
+      // TopicArn: process.env.AWS_TOPIC_ARN,
+      TopicArn: 'arn:aws:sns:us-east-1:513154394236:CapturaEventoGithub',
+      Message: JSON.stringify(response),
+    };
+    await this.snsService
+      .publish(params)
+      .promise()
+      .then((res) => {
+        console.log('RES: ', res);
+      })
+      .catch((err) => {
+        console.log('ERR: ', err);
+      });
     return response;
   }
 }

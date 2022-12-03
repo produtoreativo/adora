@@ -41,6 +41,7 @@
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1261.0",
     "aws-serverless-express": "^3.4.0",
+    "nest-aws-sdk": "^3.0.0",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

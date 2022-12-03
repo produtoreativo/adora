@@ -32,6 +32,10 @@ provider:
       statements:
         - Effect: Allow
           Action:
+            - sns:Publish
+          Resource: "*"
+        - Effect: Allow
+          Action:
             - sqs:SendMessage
           Resource:
             - Fn::GetAtt: [ receiverQueue, Arn ]

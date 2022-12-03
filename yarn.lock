@@ -9010,6 +9010,11 @@ neo-async@^2.6.0, neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+nest-aws-sdk@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/nest-aws-sdk/-/nest-aws-sdk-3.0.0.tgz#cc93fb1887178380221abab865ae301d0dc1bdfc"
+  integrity sha512-odHfgbOF1CjmRnFXzgR0GTAqeTRcbKGJb+XTV46ScBC6tEUMVjdGjtk0TQAmglwdDxy3V9sqxYrIK+ErU9sbjw==
+
 next-tick@1, next-tick@^1.0.0, next-tick@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"
