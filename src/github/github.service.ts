@@ -10,10 +10,10 @@ import { SNS } from 'aws-sdk';
 import { InjectAwsService } from 'nest-aws-sdk';
 import { PublishInput } from 'aws-sdk/clients/sns';
 
-const awsAccessKey = process.env.AWS_ACCESS_KEY_ID;
+const env = process.env.NODE_ENV;
 
 const documentClient = new DocumentClientV3(
-  awsAccessKey
+  env === 'prod'
     ? new DynamoDBClient({})
     : new DynamoDBClient({
         endpoint: 'http://localhost:8000',
@@ -35,23 +35,27 @@ export class GithubService {
   ) {} // @InjectAwsService(S3) private readonly s3: S3,
 
   async createEvent(payload: EventDto) {
-    const event = new Event();
-    event.name = payload.name;
-    const response = await this.entityManger.create(event);
-    const params: PublishInput = {
-      // TopicArn: process.env.AWS_TOPIC_ARN,
-      TopicArn: 'arn:aws:sns:us-east-1:513154394236:CapturaEventoGithub',
-      Message: JSON.stringify(response),
-    };
-    await this.snsService
-      .publish(params)
-      .promise()
-      .then((res) => {
-        console.log('RES: ', res);
-      })
-      .catch((err) => {
-        console.log('ERR: ', err);
+    try {
+      const event = new Event();
+      event.name = payload.name;
+      const dynamoResponse = await this.entityManger.create(event);
+      const params: PublishInput = {
+        TopicArn: process.env.AWS_TOPIC_ARN,
+        Message: JSON.stringify(dynamoResponse),
+      };
+      // const snsResponse = await this.snsService.publish(params).promise();
+      // console.log(snsResponse);
+      const sns = new SNS({
+        endpoint:
+          process.env.NODE_ENV === 'prod' ? undefined : 'http://127.0.0.1:4002',
+        region: process.env.AWS_REGION,
       });
-    return response;
+      const snsResponse = await sns.publish(params).promise();
+      console.log(snsResponse);
+      return dynamoResponse;
+    } catch (error) {
+      console.log('ERR: ', error);
+      return 'Something goes wrong';
+    }
   }
 }

@@ -2,7 +2,7 @@
 ## Versões
 
 ```sh
-node -v 
+node -v
 # v18.8.0
 npm -v
 # 8.18.0
@@ -12,7 +12,7 @@ yarn -v
 
 ## criar credenciais
 
-Criar pares de chaves em https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/security_credentials  
+Criar pares de chaves em https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/security_credentials
 Lembrar de trocar a regiao na URL caso use outra.
 
 ## Instalar e autenticar o CLI da AWS
@@ -45,7 +45,7 @@ npm install -g serverless
 ```
 ## Como funcioa
 
-O Serverless exige o arquivo serverless.yaml com a configuração adequada para deployar ou rodar localmente.  
+O Serverless exige o arquivo serverless.yaml com a configuração adequada para deployar ou rodar localmente.
 
 O código do Nest foi adaptado pra rodar com o Express habilitado para Lambda e construímos isso em src/lambda.ts
 
@@ -58,7 +58,7 @@ cd ./dynamodb && docker-compose up -d
 
 Usar a sessão custom no serverless.yaml e executar:
 ```sh
-#sls dynamodb install 
+#sls dynamodb install
 sls dynamodb start
 # sls dynamodb migrate
 ```
@@ -82,5 +82,5 @@ serverless dynamodb migrate
 ## Deploy
 
 ```sh
-sls deploy
+sls deploy -s prod
 ```
