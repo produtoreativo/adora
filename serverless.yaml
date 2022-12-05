@@ -4,6 +4,8 @@ plugins:
  - serverless-plugin-typescript
  - serverless-plugin-optimize
  - serverless-dynamodb-local
+ - serverless-offline-sqs
+ - serverless-offline-sns
  - serverless-offline
 
 custom:
@@ -19,22 +21,39 @@ custom:
     migration:
       dir: offline/migrations
 
+  serverless-offline-sns:
+    port: 4002
+    debug: true
+
+  serverless-offline-sqs:
+    endpoint: http://localhost:9324
+    accessKeyId: local
+    secretAccessKey: local
+    autoCreate: true
+
 provider:
   name: aws
-  stage: dev
+  stage: ${opt:stage, "dev"}
   region: us-east-1
   runtime: nodejs16.x
   environment:
+    NODE_ENV: ${self:provider.stage}
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    SNS_TOPIC_NAME: ${self:service}-${opt:stage, self:provider.stage}-sns
+    SQS_QUEUE_NAME: ${self:service}-${opt:stage, self:provider.stage}-sqs
 
   iam:
     role:
       statements:
         - Effect: Allow
           Action:
+            - sns:Publish
+            - sns:Subscribe
+          Resource: { "Fn::Join" : ["", ["arn:aws:sns:${self:provider.region}:", { "Ref" : "AWS::AccountId" }, ":${self:provider.environment.SNS_TOPIC_NAME}" ] ]  }
+        - Effect: Allow
+          Action:
             - sqs:SendMessage
-          Resource:
-            - Fn::GetAtt: [ receiverQueue, Arn ]
+          Resource: { "Fn::Join" : ["", ["arn:aws:sqs:${self:provider.region}:", { "Ref" : "AWS::AccountId" }, ":${self:provider.environment.SQS_QUEUE_NAME}" ] ]  }
         - Effect: Allow
           Action:
             - dynamodb:Query
@@ -49,6 +68,8 @@ provider:
 functions:
   main:
     handler: src/lambda.handler
+    environment:
+      AWS_TOPIC_ARN: arn:aws:sns:${self:provider.region}:${aws:accountId}:${self:provider.environment.SNS_TOPIC_NAME}
     events:
       - http:
           method: any
@@ -59,7 +80,7 @@ functions:
       - sqs:
           arn:
             Fn::GetAtt:
-              - receiverQueue
+              - GithubQueue
               - Arn
 
 resources:
@@ -77,7 +98,32 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-    receiverQueue:
+    GithubQueue:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: receiverQueue
+        QueueName: ${self:provider.environment.SQS_QUEUE_NAME}
+    GithubEvents:
+      Type: AWS::SNS::Topic
+      Properties:
+        DisplayName: ${self:provider.environment.SNS_TOPIC_NAME}
+        TopicName: ${self:provider.environment.SNS_TOPIC_NAME}
+        Subscription:
+          - Protocol: sqs
+            Endpoint: !GetAtt GithubQueue.Arn
+    SnsToSqsPolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: "Allow SNS publish to SQS"
+              Effect: Allow
+              Principal:
+                Service: "sns.amazonaws.com"
+              Resource: !GetAtt GithubQueue.Arn
+              Action: SQS:SendMessage
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: !Ref GithubEvents
+        Queues:
+          - Ref: GithubQueue

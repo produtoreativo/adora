@@ -6,11 +6,14 @@ import { createConnection } from '@typedorm/core';
 import { DocumentClientV3 } from '@typedorm/document-client';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import EventTable from './event.table';
+import { SNS } from 'aws-sdk';
+import { InjectAwsService } from 'nest-aws-sdk';
+import { PublishInput } from 'aws-sdk/clients/sns';
 
-const awsAccessKey = process.env.AWS_ACCESS_KEY_ID;
+const env = process.env.NODE_ENV;
 
 const documentClient = new DocumentClientV3(
-  awsAccessKey
+  env === 'prod'
     ? new DynamoDBClient({})
     : new DynamoDBClient({
         endpoint: 'http://localhost:8000',
@@ -26,13 +29,33 @@ createConnection({
 export class GithubService {
   entityManger = getEntityManager();
 
-  constructor() {} // @InjectAwsService(S3) private readonly s3: S3,
+  constructor(
+    @InjectAwsService(SNS)
+    private readonly snsService: SNS,
+  ) {} // @InjectAwsService(S3) private readonly s3: S3,
 
   async createEvent(payload: EventDto) {
-    const event = new Event();
-    event.name = payload.name;
-    const response = await this.entityManger.create(event);
-    console.log(response);
-    return response;
+    try {
+      const event = new Event();
+      event.name = payload.name;
+      const dynamoResponse = await this.entityManger.create(event);
+      const params: PublishInput = {
+        TopicArn: process.env.AWS_TOPIC_ARN,
+        Message: JSON.stringify(dynamoResponse),
+      };
+      // const snsResponse = await this.snsService.publish(params).promise();
+      // console.log(snsResponse);
+      const sns = new SNS({
+        endpoint:
+          process.env.NODE_ENV === 'prod' ? undefined : 'http://127.0.0.1:4002',
+        region: process.env.AWS_REGION,
+      });
+      const snsResponse = await sns.publish(params).promise();
+      console.log(snsResponse);
+      return dynamoResponse;
+    } catch (error) {
+      console.log('ERR: ', error);
+      return 'Something goes wrong';
+    }
   }
 }

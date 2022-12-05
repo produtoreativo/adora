@@ -1,6 +1,10 @@
 version: "3"
 
 services:
+  sqs:
+      image: softwaremill/elasticmq:latest
+      ports:
+        - "9324:9324"
   dynamodb:
     build:
       context: .
