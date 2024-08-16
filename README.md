@@ -75,3 +75,6 @@ $ docker-compose -f docker/db/local.yml down
 - pwd: localpwd
 - database: adora
 - schema: adora
+
+
+Alteração
